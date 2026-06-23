@@ -1,0 +1,14 @@
+# Build directory
+build/
+bin/
+
+# IDE files
+.vscode/
+.vs/
+.idea/
+*.user
+*.suo
+
+# System files
+*.DS_Store
+Thumbs.db
