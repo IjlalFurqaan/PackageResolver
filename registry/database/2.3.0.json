@@ -1,0 +1,8 @@
+{
+    "name": "database",
+    "version": "2.3.0",
+    "description": "Database abstraction layer with connection pooling",
+    "dependencies": {
+        "logger": ">=1.0.0"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "name": "orm",
+    "version": "1.1.0",
+    "description": "Object-Relational Mapping with migrations and query builder",
+    "dependencies": {
+        "database": "^2.0.0",
+        "logger": ">=1.0.0"
+    }
+}

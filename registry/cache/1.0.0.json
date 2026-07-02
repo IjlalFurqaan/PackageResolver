@@ -1,0 +1,9 @@
+{
+    "name": "cache",
+    "version": "1.0.0",
+    "description": "In-memory caching with TTL and LRU eviction",
+    "dependencies": {
+        "logger": ">=1.0.0",
+        "crypto": "^3.0.0"
+    }
+}

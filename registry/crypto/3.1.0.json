@@ -1,0 +1,6 @@
+{
+    "name": "crypto",
+    "version": "3.1.0",
+    "description": "Cryptographic primitives: hashing, encryption, signatures",
+    "dependencies": {}
+}

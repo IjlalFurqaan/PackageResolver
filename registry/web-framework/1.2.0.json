@@ -1,0 +1,9 @@
+{
+    "name": "web-framework",
+    "version": "1.2.0",
+    "description": "Full-featured web framework with routing, middleware, and templating",
+    "dependencies": {
+        "http-client": "^1.0.0",
+        "json-parser": ">=2.0.0"
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "name": "json-parser",
+    "version": "2.0.1",
+    "description": "Fast JSON parsing and serialization library",
+    "dependencies": {}
+}
