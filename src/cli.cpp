@@ -12,6 +12,10 @@ namespace fs = std::filesystem;
 
 namespace pkgr {
 
+// Named constants — change in one place, reflected everywhere.
+static constexpr const char* kVersion     = "1.0.0";
+static constexpr int         kMaxTreeDepth = 10;
+
 CLI::CLI(int argc, char* argv[]) {
     executable_path_ = argv[0];
     for (int i = 1; i < argc; ++i) {
@@ -35,36 +39,19 @@ int CLI::run() {
     try {
         switch (cmd) {
             case Command::RESOLVE:
-                if (args_.size() < 2) {
-                    std::cerr << RED << "  Error: " << RESET 
-                              << "Missing manifest path\n";
-                    std::cerr << DIM << "  Usage: pkgr resolve <manifest.json>\n" << RESET;
-                    return 1;
-                }
+                if (!require_manifest_arg("resolve")) return 1;
                 return cmd_resolve(args_[1]);
 
             case Command::INSTALL:
-                if (args_.size() < 2) {
-                    std::cerr << RED << "  Error: " << RESET 
-                              << "Missing manifest path\n";
-                    return 1;
-                }
+                if (!require_manifest_arg("install")) return 1;
                 return cmd_install(args_[1]);
 
             case Command::GRAPH:
-                if (args_.size() < 2) {
-                    std::cerr << RED << "  Error: " << RESET 
-                              << "Missing manifest path\n";
-                    return 1;
-                }
+                if (!require_manifest_arg("graph")) return 1;
                 return cmd_graph(args_[1]);
 
             case Command::CHECK:
-                if (args_.size() < 2) {
-                    std::cerr << RED << "  Error: " << RESET 
-                              << "Missing manifest path\n";
-                    return 1;
-                }
+                if (!require_manifest_arg("check")) return 1;
                 return cmd_check(args_[1]);
 
             case Command::LIST:
@@ -72,7 +59,7 @@ int CLI::run() {
 
             case Command::INFO:
                 if (args_.size() < 2) {
-                    std::cerr << RED << "  Error: " << RESET 
+                    std::cerr << RED << "  Error: " << RESET
                               << "Missing package name\n";
                     return 1;
                 }
@@ -219,7 +206,7 @@ int CLI::cmd_graph(const std::string& manifest_path) {
     std::cout << "  " << BOLD_WHITE << root_pkg.name() << "@" << root_pkg.version() 
               << RESET << "\n";
 
-    print_dependency_tree(root_pkg, registry, "  ", true, 0);
+    print_dependency_tree(root_pkg, registry, "  ", 0);
 
     std::cout << "\n";
     return 0;
@@ -361,14 +348,14 @@ void CLI::cmd_help() const {
 void CLI::cmd_version() const {
     using namespace color;
     std::cout << BOLD_CYAN << "  pkgr" << RESET << " version " 
-              << BOLD << "1.0.0" << RESET << "\n";
+              << BOLD << kVersion << RESET << "\n";
 }
 
 void CLI::print_banner() const {
     using namespace color;
     std::cout << "\n";
     std::cout << BOLD_CYAN << "  ╔═══════════════════════════════════════╗\n";
-    std::cout << "  ║   📦  PackageResolver v1.0.0          ║\n";
+    std::cout << "  ║   📦  PackageResolver v" << kVersion << "          ║\n";
     std::cout << "  ║   Dependency Resolution Engine         ║\n";
     std::cout << "  ╚═══════════════════════════════════════╝" << RESET << "\n";
 }
@@ -401,12 +388,21 @@ std::string CLI::get_registry_path() const {
         "Registry directory not found. Expected 'registry/' in current directory.");
 }
 
+bool CLI::require_manifest_arg(const std::string& command) const {
+    using namespace color;
+    if (args_.size() < 2) {
+        std::cerr << RED << "  Error: " << RESET << "Missing manifest path\n";
+        std::cerr << DIM << "  Usage: pkgr " << command << " <manifest.json>\n" << RESET;
+        return false;
+    }
+    return true;
+}
+
 void CLI::print_dependency_tree(const Package& pkg, const Registry& registry,
-                                 const std::string& prefix, bool is_last,
+                                 const std::string& prefix,
                                  int depth) const {
     using namespace color;
 
-    (void)is_last; 
     const auto& deps = pkg.dependencies();
 
     for (size_t i = 0; i < deps.size(); ++i) {
@@ -427,9 +423,9 @@ void CLI::print_dependency_tree(const Package& pkg, const Registry& registry,
 
             std::cout << "\n";
 
-            if (depth < 10 && found.value()->has_dependencies()) {
-                print_dependency_tree(*found.value(), registry, 
-                                     prefix + extension, last, depth + 1);
+            if (depth < kMaxTreeDepth && found.value()->has_dependencies()) {
+                print_dependency_tree(*found.value(), registry,
+                                     prefix + extension, depth + 1);
             }
         } else {
             std::cout << RED << "  ✗ not found" << RESET << "\n";

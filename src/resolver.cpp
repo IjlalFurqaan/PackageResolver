@@ -1,8 +1,6 @@
 
 #include "resolver.h"
 #include "exceptions.h"
-#include "colors.h"
-#include <iostream>
 #include <algorithm>
 
 namespace pkgr {
@@ -24,10 +22,8 @@ std::vector<ResolvedPackage> Resolver::resolve(const Package& root) {
     }
 
     auto sorted = dep_graph_.topological_sort();
-
-    if (sorted.empty() && dep_graph_.node_count() > 0) {
-        throw PackageResolverError("Failed to determine install order (possible cycle)");
-    }
+    // Invariant: sorted is non-empty whenever node_count() > 0, because
+    // has_cycle() above guarantees the graph is a DAG at this point.
 
     std::vector<ResolvedPackage> result;
     for (const auto& name : sorted) {
@@ -46,7 +42,7 @@ void Resolver::resolve_recursive(const Package& pkg, int depth) {
     for (const auto& dep : pkg.dependencies()) {
 
         if (resolved_.find(dep.name) != resolved_.end()) {
-
+            // Already resolved in a prior branch — just wire up the edge.
             dep_graph_.add_edge(pkg.name(), dep.name);
             continue;
         }

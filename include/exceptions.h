@@ -21,7 +21,7 @@ public:
         : PackageResolverError("Package not found: " + package_name),
           package_name_(package_name) {}
 
-    const std::string& package_name() const { return package_name_; }
+    [[nodiscard]] const std::string& package_name() const { return package_name_; }
 };
 
 class VersionConflictError : public PackageResolverError {
@@ -36,8 +36,8 @@ public:
           package_name_(package_name),
           constraint_(constraint) {}
 
-    const std::string& package_name() const { return package_name_; }
-    const std::string& constraint() const { return constraint_; }
+    [[nodiscard]] const std::string& package_name() const { return package_name_; }
+    [[nodiscard]] const std::string& constraint() const { return constraint_; }
 };
 
 class CircularDependencyError : public PackageResolverError {
@@ -47,14 +47,16 @@ public:
         : PackageResolverError(build_message(cycle)),
           cycle_(cycle) {}
 
-    const std::vector<std::string>& cycle() const { return cycle_; }
+    [[nodiscard]] const std::vector<std::string>& cycle() const { return cycle_; }
 
 private:
     static std::string build_message(const std::vector<std::string>& cycle) {
         std::string msg = "Circular dependency detected: ";
-        for (size_t i = 0; i < cycle.size(); ++i) {
-            msg += cycle[i];
-            if (i < cycle.size() - 1) msg += " -> ";
+        bool first = true;
+        for (const auto& node : cycle) {
+            if (!first) msg += " -> ";
+            msg += node;
+            first = false;
         }
         return msg;
     }
@@ -72,8 +74,8 @@ public:
           file_path_(file_path),
           line_(line) {}
 
-    const std::string& file_path() const { return file_path_; }
-    int line() const { return line_; }
+    [[nodiscard]] const std::string& file_path() const { return file_path_; }
+    [[nodiscard]] int line() const { return line_; }
 };
 
 class JsonParseError : public PackageResolverError {
@@ -89,8 +91,8 @@ public:
           line_(line),
           column_(column) {}
 
-    int line() const { return line_; }
-    int column() const { return column_; }
+    [[nodiscard]] int line() const { return line_; }
+    [[nodiscard]] int column() const { return column_; }
 };
 
 } 

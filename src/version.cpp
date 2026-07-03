@@ -11,6 +11,7 @@ Version::Version() : major_(0), minor_(0), patch_(0) {}
 Version::Version(int major, int minor, int patch) 
     : major_(major), minor_(minor), patch_(patch) 
 {
+    // Guard the direct-integer path; parse() handles the string path independently.
     if (major < 0 || minor < 0 || patch < 0) {
         throw std::invalid_argument("Version components cannot be negative");
     }

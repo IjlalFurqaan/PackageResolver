@@ -2,6 +2,7 @@
 #include "registry.h"
 #include "manifest.h"
 #include "exceptions.h"
+#include "colors.h"
 #include <filesystem>
 #include <algorithm>
 #include <iostream>
@@ -30,12 +31,22 @@ void Registry::load() {
                     try {
                         load_package_file(dir_name, file_entry.path().string());
                     } catch (const std::exception& e) {
-                        std::cerr << "Warning: Failed to load " 
+                        std::cerr << color::YELLOW << "Warning: " << color::RESET
+                                  << "Failed to load " 
                                   << file_entry.path() << ": " << e.what() << "\n";
                     }
                 }
             }
         }
+    }
+
+    // Sort all version lists once after the full registry is loaded.
+    // This is more efficient than sorting on every individual insert.
+    for (auto& [name, versions] : packages_) {
+        std::sort(versions.begin(), versions.end(),
+            [](const std::shared_ptr<Package>& a, const std::shared_ptr<Package>& b) {
+                return a->version() > b->version(); // newest first
+            });
     }
 }
 
@@ -43,17 +54,13 @@ void Registry::load_package_file(const std::string& dir_name, const std::string&
     auto pkg = std::make_shared<Package>(ManifestParser::parse(file_path));
 
     if (pkg->name() != dir_name) {
-        std::cerr << "Warning: Package name '" << pkg->name() 
+        std::cerr << color::YELLOW << "Warning: " << color::RESET
+                  << "Package name '" << pkg->name() 
                   << "' doesn't match directory '" << dir_name << "'\n";
     }
 
     packages_[pkg->name()].push_back(pkg);
-
-    auto& versions = packages_[pkg->name()];
-    std::sort(versions.begin(), versions.end(),
-        [](const std::shared_ptr<Package>& a, const std::shared_ptr<Package>& b) {
-            return a->version() > b->version();  
-        });
+    // Version sorting is deferred to load() for efficiency.
 }
 
 std::optional<std::shared_ptr<Package>> Registry::find_package(

@@ -43,8 +43,9 @@ private:
 
     Registry load_registry() const;
     std::string get_registry_path() const;
+    bool require_manifest_arg(const std::string& command) const;
     void print_dependency_tree(const Package& pkg, const Registry& registry,
-                               const std::string& prefix = "", bool is_last = true,
+                               const std::string& prefix = "",
                                int depth = 0) const;
     void print_banner() const;
 };

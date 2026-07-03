@@ -5,7 +5,7 @@
 #include "graph.h"
 #include <string>
 #include <vector>
-#include <map>
+#include <unordered_map>
 #include <memory>
 
 namespace pkgr {
@@ -23,18 +23,18 @@ class Resolver {
 public:
     explicit Resolver(const Registry& registry);
 
-    std::vector<ResolvedPackage> resolve(const Package& root);
+    [[nodiscard]] std::vector<ResolvedPackage> resolve(const Package& root);
 
-    const Graph<std::string>& dependency_graph() const { return dep_graph_; }
+    [[nodiscard]] const Graph<std::string>& dependency_graph() const { return dep_graph_; }
 
-    bool has_circular_dependencies() const;
+    [[nodiscard]] bool has_circular_dependencies() const;
 
-    std::vector<std::string> get_cycle() const;
+    [[nodiscard]] std::vector<std::string> get_cycle() const;
 
 private:
     const Registry& registry_;
     Graph<std::string> dep_graph_;
-    std::map<std::string, ResolvedPackage> resolved_;
+    std::unordered_map<std::string, ResolvedPackage> resolved_;
 
     void resolve_recursive(const Package& pkg, int depth);
 };
