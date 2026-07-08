@@ -12,3 +12,8 @@ bin/
 # System files
 *.DS_Store
 Thumbs.db
+
+# Agent / tool caches
+.cache/
+.claude/
+.gemini/
