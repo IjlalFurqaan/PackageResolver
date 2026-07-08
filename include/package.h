@@ -35,6 +35,7 @@ public:
     const std::string& name() const { return name_; }
     const Version& version() const { return version_; }
     const std::string& description() const { return description_; }
+    const std::string& author() const { return author_; }
     const std::vector<Dependency>& dependencies() const { return dependencies_; }
 
     std::string id() const;
@@ -47,6 +48,7 @@ private:
     std::string name_;
     Version version_;
     std::string description_;
+    std::string author_;
     std::vector<Dependency> dependencies_;
 };
 

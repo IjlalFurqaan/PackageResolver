@@ -34,6 +34,11 @@ Package ManifestParser::from_json(const JsonObject& obj) {
         description = obj.get_string("description");
     }
 
+    std::string author;
+    if (obj.has("author")) {
+        author = obj.get_string("author");
+    }
+
     std::vector<Dependency> dependencies;
     if (obj.has("dependencies")) {
         const auto* deps_val = obj.get("dependencies");
