@@ -52,6 +52,10 @@ bool VersionConstraint::satisfies(const Version& version) const {
                    version.minor() == target_.minor();
     }
 
+    case ConstraintOp::WILDCARD:
+            return true;  // wildcard matches any version
+    }
+
     return false; 
 }
 
@@ -74,6 +78,7 @@ std::string VersionConstraint::op_to_string(ConstraintOp op) {
         case ConstraintOp::GTE:   return ">=";
         case ConstraintOp::CARET: return "^";
         case ConstraintOp::TILDE: return "~";
+        case ConstraintOp::WILDCARD: return "*";
     }
     return "?";
 }
@@ -101,6 +106,8 @@ std::pair<ConstraintOp, std::string> VersionConstraint::parse_operator(const std
     if (first == '=') return { ConstraintOp::EQ, trimmed.substr(1) };
     if (first == '^') return { ConstraintOp::CARET, trimmed.substr(1) };
     if (first == '~') return { ConstraintOp::TILDE, trimmed.substr(1) };
+
+    if (trimmed == "*") return { ConstraintOp::WILDCARD, "0.0.0" };
 
     return { ConstraintOp::EQ, trimmed };
 }

@@ -13,7 +13,8 @@ enum class ConstraintOp {
     LTE,    
     GTE,    
     CARET,  
-    TILDE   
+    TILDE,  
+    WILDCARD
 };
 
 class VersionConstraint {
