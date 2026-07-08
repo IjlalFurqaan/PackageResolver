@@ -29,6 +29,8 @@ namespace color {
     constexpr const char* BOLD_WHITE = "\033[1;37m";
 
     constexpr const char* DIM = "\033[2m";
+    constexpr const char* UNDERLINE = "\033[4m";
+    constexpr const char* STRIKETHROUGH = "\033[9m";
 
     inline std::string colorize(const std::string& text, const char* color_code) {
         return std::string(color_code) + text + RESET;
