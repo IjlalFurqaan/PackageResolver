@@ -278,6 +278,8 @@ int CLI::cmd_list() {
         std::cout << "\n";
     }
 
+    std::cout << DIM << "  " << names.size() << " unique packages, " 
+              << registry.total_packages() << " total versions" << RESET << "\n";
     std::cout << "\n";
     return 0;
 }
