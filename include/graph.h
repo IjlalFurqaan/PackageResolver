@@ -57,9 +57,9 @@ public:
         adjacency_list_[from].push_back(to);
     }
 
-    size_t node_count() const { return nodes_.size(); }
+    [[nodiscard]] size_t node_count() const { return nodes_.size(); }
 
-    size_t edge_count() const {
+    [[nodiscard]] size_t edge_count() const {
         size_t count = 0;
         for (const auto& [node, neighbors] : adjacency_list_) {
             count += neighbors.size();
@@ -67,11 +67,11 @@ public:
         return count;
     }
 
-    bool has_node(const T& node) const {
+    [[nodiscard]] bool has_node(const T& node) const {
         return adjacency_list_.find(node) != adjacency_list_.end();
     }
 
-    bool has_edge(const T& from, const T& to) const {
+    [[nodiscard]] bool has_edge(const T& from, const T& to) const {
         auto it = adjacency_list_.find(from);
         if (it == adjacency_list_.end()) return false;
         const auto& neighbors = it->second;
