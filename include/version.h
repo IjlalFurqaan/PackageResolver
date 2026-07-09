@@ -18,14 +18,14 @@ public:
     int minor() const { return minor_; }
     int patch() const { return patch_; }
 
-    bool operator==(const Version& other) const;
-    bool operator!=(const Version& other) const;
-    bool operator<(const Version& other) const;
-    bool operator>(const Version& other) const;
-    bool operator<=(const Version& other) const;
-    bool operator>=(const Version& other) const;
+    [[nodiscard]] bool operator==(const Version& other) const;
+    [[nodiscard]] bool operator!=(const Version& other) const;
+    [[nodiscard]] bool operator<(const Version& other) const;
+    [[nodiscard]] bool operator>(const Version& other) const;
+    [[nodiscard]] bool operator<=(const Version& other) const;
+    [[nodiscard]] bool operator>=(const Version& other) const;
 
-    std::string to_string() const;
+    [[nodiscard]] std::string to_string() const;
 
     friend std::ostream& operator<<(std::ostream& os, const Version& v);
 
