@@ -29,6 +29,7 @@ public:
 private:
     std::vector<std::string> args_;
     std::string executable_path_;
+    bool quiet_ = false;
 
     Command parse_command() const;
 

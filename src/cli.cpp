@@ -19,7 +19,12 @@ static constexpr int         kMaxTreeDepth = 10;
 CLI::CLI(int argc, char* argv[]) {
     executable_path_ = argv[0];
     for (int i = 1; i < argc; ++i) {
-        args_.emplace_back(argv[i]);
+        std::string arg(argv[i]);
+        if (arg == "-q" || arg == "--quiet") {
+            quiet_ = true;
+        } else {
+            args_.emplace_back(arg);
+        }
     }
 }
 
