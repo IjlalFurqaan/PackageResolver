@@ -34,11 +34,15 @@ bool VersionConstraint::satisfies(const Version& version) const {
         case ConstraintOp::CARET:
 
             if (target_.major() == 0) {
-                return version >= target_ && 
+                if (target_.minor() == 0) {
+                    // ^0.0.x only allows the patch to match exactly (semver: >=0.0.x <0.0.(x+1))
+                    return version == target_;
+                }
+                return version >= target_ &&
                        version.major() == target_.major() &&
                        version.minor() == target_.minor();
             }
-            return version >= target_ && 
+            return version >= target_ &&
                    version.major() == target_.major();
 
         case ConstraintOp::TILDE:
