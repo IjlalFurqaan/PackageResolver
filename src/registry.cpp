@@ -111,6 +111,12 @@ bool Registry::has_package(const std::string& name) const {
     return packages_.find(name) != packages_.end();
 }
 
+size_t Registry::version_count(const std::string& name) const {
+    auto it = packages_.find(name);
+    if (it == packages_.end()) return 0;
+    return it->second.size();
+}
+
 size_t Registry::total_packages() const {
     size_t count = 0;
     for (const auto& [_, versions] : packages_) {

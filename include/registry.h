@@ -29,6 +29,8 @@ public:
 
     size_t total_packages() const;
 
+    size_t version_count(const std::string& name) const;
+
 private:
     std::string registry_path_;
 
