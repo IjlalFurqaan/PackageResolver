@@ -22,12 +22,12 @@ public:
 
     explicit VersionConstraint(const std::string& constraint_str);
 
-    bool satisfies(const Version& version) const;
+    [[nodiscard]] bool satisfies(const Version& version) const;
 
     ConstraintOp op() const { return op_; }
     const Version& target() const { return target_; }
 
-    std::string to_string() const;
+    [[nodiscard]] std::string to_string() const;
 
     friend std::ostream& operator<<(std::ostream& os, const VersionConstraint& c);
 
