@@ -18,6 +18,9 @@ public:
     int minor() const { return minor_; }
     int patch() const { return patch_; }
 
+    /// Returns true for 0.x.y versions (pre-1.0 semver).
+    [[nodiscard]] bool is_prerelease() const { return major_ == 0; }
+
     [[nodiscard]] bool operator==(const Version& other) const;
     [[nodiscard]] bool operator!=(const Version& other) const;
     [[nodiscard]] bool operator<(const Version& other) const;
