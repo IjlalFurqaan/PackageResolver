@@ -47,12 +47,11 @@ bool VersionConstraint::satisfies(const Version& version) const {
 
         case ConstraintOp::TILDE:
 
-            return version >= target_ && 
+            return version >= target_ &&
                    version.major() == target_.major() &&
                    version.minor() == target_.minor();
-    }
 
-    case ConstraintOp::WILDCARD:
+        case ConstraintOp::WILDCARD:
             return true;  // wildcard matches any version
     }
 
