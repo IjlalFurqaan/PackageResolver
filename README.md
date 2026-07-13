@@ -1,5 +1,6 @@
 # PackageResolver
 
+[![CI](https://github.com/IjlalFurqaan/PackageResolver/actions/workflows/ci.yml/badge.svg)](https://github.com/IjlalFurqaan/PackageResolver/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![C++17](https://img.shields.io/badge/C++-17-blue.svg)](https://isocpp.org/)
 [![CMake](https://img.shields.io/badge/CMake-3.16+-green.svg)](https://cmake.org/)
@@ -33,6 +34,20 @@ mkdir build && cd build
 cmake ..
 cmake --build .
 ```
+
+### Running the Tests
+
+The project ships with a zero-dependency unit test suite (a minimal
+custom harness — no external test framework) covering version parsing,
+constraint matching, graph algorithms, and end-to-end resolution.
+
+```bash
+cd build
+ctest --output-on-failure
+```
+
+Continuous integration builds and tests every commit on Linux (GCC and
+Clang, plus an AddressSanitizer/UBSan run) and Windows (MSVC).
 
 ## Usage
 
@@ -105,6 +120,7 @@ PackageResolver/
 │   ├── cli.h             # CLI argument parsing and execution
 │   └── exceptions.h      # Custom error handling
 ├── src/                  # Implementation files
+├── tests/                # Unit test suite (custom zero-dependency harness)
 ├── registry/             # Default package registry
 └── sample_project/       # Example project for testing
 ```
