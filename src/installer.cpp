@@ -2,6 +2,7 @@
 #include "installer.h"
 #include "colors.h"
 #include <iostream>
+#include <sstream>
 #include <thread>
 #include <chrono>
 #include <random>
