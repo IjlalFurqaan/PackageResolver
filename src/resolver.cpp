@@ -25,6 +25,11 @@ std::vector<ResolvedPackage> Resolver::resolve(const Package& root) {
     // Invariant: sorted is non-empty whenever node_count() > 0, because
     // has_cycle() above guarantees the graph is a DAG at this point.
 
+    // Edges point dependent -> dependency, so Kahn's algorithm yields
+    // dependents first. Installation must happen dependencies-first,
+    // so reverse into leaf-to-root order.
+    std::reverse(sorted.begin(), sorted.end());
+
     std::vector<ResolvedPackage> result;
     for (const auto& name : sorted) {
         if (name == root.name()) continue; 
