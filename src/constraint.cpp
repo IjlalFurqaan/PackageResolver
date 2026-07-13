@@ -59,6 +59,9 @@ bool VersionConstraint::satisfies(const Version& version) const {
 }
 
 std::string VersionConstraint::to_string() const {
+    if (op_ == ConstraintOp::WILDCARD) {
+        return "*";  // the placeholder target version is meaningless here
+    }
     return op_to_string(op_) + target_.to_string();
 }
 
